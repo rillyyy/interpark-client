@@ -1,4 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
+import { BtCate } from "../components/ui/buttons";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
@@ -6,6 +8,8 @@ import "swiper/css/navigation";
 import "../styles/recommend.css";
 import "../styles/common.css";
 import { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { InnerArea, SectionTag } from "./layout/layout";
 
 function Recommend() {
   // js 코드 자리
@@ -14,6 +18,27 @@ function Recommend() {
   const swiperRef = useRef();
   // JSON 데이터 저장해 두고, 자료가 바뀌면 화면을 변경할 리액트 변수를 생성
   const [htmlTag, setHtmlTag] = useState([]);
+
+  // 외부 데이터 연동하기 ( axios 이용 )
+  const axiosJsonData = function () {
+    axios
+      .get("recommend.json")
+      .then(function (res) {
+        console.log(res.data);
+
+        const result = res.data;
+        let arr = [];
+        for (let i = 0; i < result.total; i++) {
+          const obj = result["good_" + (i + 1)];
+          arr[i] = obj;
+        }
+        console.log(arr);
+        setHtmlTag(arr);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   // 외부 데이터 연동하기 (fetch 이용)
   const getJsonData = () => {
@@ -57,12 +82,13 @@ function Recommend() {
   useEffect(() => {
     // 렌더링 될 때
     // visual.json 데이터 불러들이기 기능실행
-    getJsonData();
+    // getJsonData();
+    axiosJsonData();
   }, []);
 
   return (
-    <section className="recommend">
-      <div className="recommend-inner">
+    <SectionTag pt={80} pb={90}>
+      <InnerArea>
         <div className="recommend-header">
           <h2 className="recommend-title">쇼핑추천</h2>
           <span className="recommend-txt">
@@ -73,32 +99,19 @@ function Recommend() {
           <div className="recommend-main-category">
             <ul className="recommend-main-category-list">
               <li>
-                <button className="recommend-main-category-list-button recommend-main-category-list-button-active">
-                  쎈딜
-                </button>
+                <BtCate active={true}>쎈딜</BtCate>
               </li>
               <li>
-                <button className="recommend-main-category-list-button recommend-main-category-list-button-active">
-                  베스트
-                </button>
+                <BtCate>베스트</BtCate>
               </li>
               <li>
-                <button className="recommend-main-category-list-button recommend-main-category-list-button-active">
-                  블프데이
-                </button>
+                <BtCate>블프데이</BtCate>
               </li>
               <li>
-                <button className="recommend-main-category-list-button recommend-main-category-list-button-active">
-                  디지털프라자
-                </button>
+                <BtCate>디지털프라자</BtCate>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="recommend-main-category-list-button recommend-main-category-list-button-active"
-                >
-                  소담상회
-                </a>
+                <a href="#">소담상회</a>
               </li>
             </ul>
           </div>
@@ -163,8 +176,8 @@ function Recommend() {
         <div className="recommend-footer">
           <a href="#">쇼핑 홈 바로가기</a>
         </div>
-      </div>
-    </section>
+      </InnerArea>
+    </SectionTag>
   );
 }
 

@@ -1,14 +1,32 @@
+import { BtSlidePrev, BtSlideNext } from "../components/ui/buttons";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import "../styles/visual.css";
 import { useEffect, useRef, useState } from "react";
+// axios 모듈(js.파일) 가져오기
+import axios from "axios";
+import styled from "@emotion/styled";
+import { InnerArea } from "./layout/layout";
 
 function Visual() {
   // js 코드 자리
   // JSX 에 작성된 html 태그를 React 에서 참조
   // 1. swiper 슬라이드 태그를 참조한다.
   const swiperRef = useRef();
+
+  // 외부 데이터 연동 (axios 활용)
+  const axiosGetData = function () {
+    axios
+      .get("visual.json")
+      .then(function (res) {
+        // console.log(res.data);
+        makeVisualSlide(res.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   // 외부 데이터 연동 ( fetch 활용 )
   const fetchGetData = () => {
@@ -60,16 +78,36 @@ function Visual() {
   useEffect(() => {
     // 렌더링될 때
     // visual.json 데이터 불러들이기 기능실행
-    fetchGetData();
+    axiosGetData();
+    // fetchGetData();
 
     return () => {
       // 삭제될 때 (clean Up 함수)
     };
   }, []);
 
+  const SectionTag = styled.section`
+    position: relative;
+    padding-top: 30px;
+    padding-bottom: 80px;
+  `;
+
+  const SlideItem = styled.div`
+    position: relative;
+    width: 628px;
+  `;
+
+  const SlideLink = styled.a`
+    position: relative;
+    width: 100%;
+    display: block;
+    overflow: hidden;
+    background-color: red;
+  `;
+
   return (
-    <section className="visual">
-      <div className="visual-inner">
+    <SectionTag pt={80} pb={80}>
+      <InnerArea style={{ height: 345 }}>
         <Swiper
           slidesPerView={2}
           spaceBetween={24}
@@ -87,33 +125,31 @@ function Visual() {
           {visualHtml.map((item, index) => {
             return (
               <SwiperSlide key={index}>
-                <div className="visual-slide-item">
-                  <a href={item.url}>
+                <SlideItem>
+                  <SlideLink href={item.url}>
                     <img
                       src={process.env.PUBLIC_URL + item.file}
                       alt={item.file}
                     />
-                  </a>
-                </div>
+                  </SlideLink>
+                </SlideItem>
               </SwiperSlide>
             );
           })}
         </Swiper>
 
-        <button
-          className="visual-slide-prev"
+        <BtSlidePrev
           onClick={() => {
             swiperRef.current.slidePrev();
           }}
-        ></button>
-        <button
-          className="visual-slide-next"
+        ></BtSlidePrev>
+        <BtSlideNext
           onClick={() => {
             swiperRef.current.slideNext();
           }}
-        ></button>
-      </div>
-    </section>
+        ></BtSlideNext>
+      </InnerArea>
+    </SectionTag>
   );
 }
 export default Visual;
