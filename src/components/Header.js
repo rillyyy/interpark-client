@@ -10,7 +10,7 @@ function Header() {
       {/* <!-- 레이아웃 : div --> */}
       <div className="header-inner">
         <div className="header-top">
-          <HeaderTopLeft w="625">
+          <HeaderTopLeft w="625" h="50">
             <a href="index.html" className="logo"></a>
             {/* <!-- 검색은 div 하나 주자! --> */}
             <div className="header-search">
