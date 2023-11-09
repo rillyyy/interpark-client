@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+// import styled from "@emotion/styled";
 import "../styles/header.css";
 import { HeaderTopLeft } from "../styled/Header";
 
@@ -10,7 +10,7 @@ function Header() {
       {/* <!-- 레이아웃 : div --> */}
       <div className="header-inner">
         <div className="header-top">
-          <HeaderTopLeft w="625" h="50">
+          <HeaderTopLeft w={625} h={50}>
             <a href="index.html" className="logo"></a>
             {/* <!-- 검색은 div 하나 주자! --> */}
             <div className="header-search">
@@ -30,7 +30,7 @@ function Header() {
                 <a href="#">회원가입</a>
               </li>
               <li>
-                <a href="#" id="mypage-bt" className="mypage-bt">
+                <a href="#" className="mypage-bt" className="mypage-bt">
                   마이페이지
                   <img src="images/icon_arrow.svg" alt="" />
                 </a>
